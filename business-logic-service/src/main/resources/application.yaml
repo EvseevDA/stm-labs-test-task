@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: business-logic-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/transport_ticket_bl_service_db
+    username: postgres
+    password: postgres
+  flyway:
+    default-schema: bll
+    enabled: true
+    baseline-on-migrate: true
+    schemas: bll
+server:
+  port: 8082
