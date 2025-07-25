@@ -2,7 +2,7 @@ package com.github.evseevda.businesslogicservice.ticket.repository;
 
 import com.github.evseevda.businesslogicservice.core.util.mapper.JdbcRecordMapper;
 import com.github.evseevda.businesslogicservice.core.util.mapper.JooqRecordMapper;
-import com.github.evseevda.businesslogicservice.ticket.entity.TicketEntity;
+import com.github.evseevda.businesslogicservice.ticket.entity.Ticket;
 import com.github.evseevda.businesslogicservice.ticket.search.TicketSearchFilter;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
@@ -27,11 +27,11 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
     private final DSLContext dsl;
-    private final JdbcRecordMapper<TicketEntity> ticketJdbcRecordMapper;
-    private final JooqRecordMapper<TicketEntity> ticketJooqRecordMapper;
+    private final JdbcRecordMapper<Ticket> ticketJdbcRecordMapper;
+    private final JooqRecordMapper<Ticket> ticketJooqRecordMapper;
 
     @Override
-    public Stream<TicketEntity> findAllAvailableTickets(PageRequest pageRequest, TicketSearchFilter filter) {
+    public Stream<Ticket> findAllAvailableTickets(PageRequest pageRequest, TicketSearchFilter filter) {
         SelectConditionStep<? extends Record> baseQuery = dsl.select(
                         TICKET.ID,
                         TICKET.DATE_TIME_UTC,
@@ -101,14 +101,14 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Stream<TicketEntity> findAllTicketsByPassengerId(Long passengerId) {
+    public Stream<Ticket> findAllTicketsByPassengerId(Long passengerId) {
         String sql = "SELECT * FROM bl.ticket WHERE passenger_id = :passengerId";
         Map<String, ?> params = Map.of("passengerId", passengerId);
         return jdbcTemplate.queryForStream(sql, params, (rs, rowNum) -> ticketJdbcRecordMapper.extractEntity(rs));
     }
 
     @Override
-    public TicketEntity saveNew(TicketEntity entity) {
+    public Ticket saveNew(Ticket entity) {
         String sql = """
                 INSERT INTO bl.ticket (route_id, date_time_utc, seat_number, cost)
                 VALUES
@@ -125,7 +125,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public TicketEntity update(TicketEntity entity) {
+    public Ticket update(Ticket entity) {
         String sql = """
                 UPDATE bl.ticket
                 SET
@@ -153,7 +153,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Optional<TicketEntity> findById(Long id) {
+    public Optional<Ticket> findById(Long id) {
         String sql = "SELECT * FROM bl.ticket WHERE id = :id";
         Map<String, ?> params = Map.of("id", id);
         return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNullableEntity);

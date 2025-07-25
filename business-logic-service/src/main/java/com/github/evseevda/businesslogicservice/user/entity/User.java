@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class UserEntity {
+public class User {
 
     private Long id;
     private String login;

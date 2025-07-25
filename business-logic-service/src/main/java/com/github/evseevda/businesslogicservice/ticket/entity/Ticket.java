@@ -1,31 +1,26 @@
 package com.github.evseevda.businesslogicservice.ticket.entity;
 
-import com.github.evseevda.businesslogicservice.route.entity.RouteEntity;
-import com.github.evseevda.businesslogicservice.user.entity.UserEntity;
+import com.github.evseevda.businesslogicservice.route.entity.Route;
+import com.github.evseevda.businesslogicservice.user.entity.User;
 import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 24.07.2025
- */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @EqualsAndHashCode
 @Builder
-public class TicketEntity {
+public class Ticket {
 
     private Long id;
-    private RouteEntity route;
+    private Route route;
     private LocalDateTime dateTimeUtc;
     private Integer seatNumber;
     private BigDecimal cost;
-    private UserEntity passenger;
+    private User passenger;
 
 }

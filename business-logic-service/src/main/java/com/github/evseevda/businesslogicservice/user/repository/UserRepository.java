@@ -1,13 +1,13 @@
 package com.github.evseevda.businesslogicservice.user.repository;
 
 
-import com.github.evseevda.businesslogicservice.user.entity.UserEntity;
+import com.github.evseevda.businesslogicservice.user.entity.User;
 
 import java.util.Optional;
 
 public interface UserRepository {
 
-    UserEntity saveNew(UserEntity user);
-    Optional<UserEntity> findById(Long userId);
+    User saveNew(User user);
+    Optional<User> findById(Long userId);
 
 }

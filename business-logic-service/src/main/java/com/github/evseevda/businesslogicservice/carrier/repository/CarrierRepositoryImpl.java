@@ -1,6 +1,6 @@
 package com.github.evseevda.businesslogicservice.carrier.repository;
 
-import com.github.evseevda.businesslogicservice.carrier.entity.CarrierEntity;
+import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;
 import com.github.evseevda.businesslogicservice.core.util.mapper.JdbcRecordMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,17 +15,17 @@ import java.util.Optional;
 public class CarrierRepositoryImpl implements CarrierRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    private final JdbcRecordMapper<CarrierEntity> carrierJdbcRecordMapper;
+    private final JdbcRecordMapper<Carrier> carrierJdbcRecordMapper;
 
     @Override
-    public Optional<CarrierEntity> findById(Long carrierId) {
+    public Optional<Carrier> findById(Long carrierId) {
         String sql = "SELECT * FROM bl.carrier WHERE id = :carrierId";
         Map<String, ?> params = Map.of("carrierId", carrierId);
         return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractNullableEntity);
     }
 
     @Override
-    public CarrierEntity saveNew(CarrierEntity entity) {
+    public Carrier saveNew(Carrier entity) {
         String sql = """
                 INSERT INTO bl.carrier (company_name, phone)
                 VALUES
@@ -40,7 +40,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
     }
 
     @Override
-    public CarrierEntity update(CarrierEntity entity) {
+    public Carrier update(Carrier entity) {
         String sql = """
                 UPDATE bl.carrier
                 SET company_name = :companyName, phone = :phone

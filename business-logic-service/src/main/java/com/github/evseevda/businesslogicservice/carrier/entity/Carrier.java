@@ -8,7 +8,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode
-public class CarrierEntity {
+public class Carrier {
 
     private Long id;
     private String companyName;

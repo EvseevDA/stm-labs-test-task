@@ -1,10 +1,10 @@
 package com.github.evseevda.businesslogicservice.ticket.mapper;
 
 import com.github.evseevda.businesslogicservice.core.util.mapper.AbstractJdbcRecordMapper;
-import com.github.evseevda.businesslogicservice.route.entity.RouteEntity;
+import com.github.evseevda.businesslogicservice.route.entity.Route;
 import com.github.evseevda.businesslogicservice.route.repository.RouteRepository;
-import com.github.evseevda.businesslogicservice.ticket.entity.TicketEntity;
-import com.github.evseevda.businesslogicservice.user.entity.UserEntity;
+import com.github.evseevda.businesslogicservice.ticket.entity.Ticket;
+import com.github.evseevda.businesslogicservice.user.entity.User;
 import com.github.evseevda.businesslogicservice.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,13 +17,13 @@ import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
-public class TicketJdbcRecordMapper extends AbstractJdbcRecordMapper<TicketEntity> {
+public class TicketJdbcRecordMapper extends AbstractJdbcRecordMapper<Ticket> {
 
     private final RouteRepository routeRepository;
     private final UserRepository userRepository;
 
     @Override
-    public TicketEntity extractEntity(ResultSet rs) throws SQLException {
+    public Ticket extractEntity(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
         long routeId = rs.getLong("route_id");
         LocalDateTime dateTimeUtc = rs.getObject("date_time_utc", LocalDateTime.class);
@@ -31,10 +31,10 @@ public class TicketJdbcRecordMapper extends AbstractJdbcRecordMapper<TicketEntit
         BigDecimal cost = rs.getObject("cost", BigDecimal.class);
         Long passengerId = rs.getObject("passenger_id", Long.class);
 
-        RouteEntity route = routeRepository.findById(routeId).orElseThrow();
-        UserEntity passenger = userRepository.findById(passengerId).orElse(null);
+        Route route = routeRepository.findById(routeId).orElseThrow();
+        User passenger = userRepository.findById(passengerId).orElse(null);
 
-        return TicketEntity.builder()
+        return Ticket.builder()
                 .id(id)
                 .route(route)
                 .dateTimeUtc(dateTimeUtc)

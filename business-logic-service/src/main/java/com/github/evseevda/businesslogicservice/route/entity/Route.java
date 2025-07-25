@@ -1,6 +1,6 @@
 package com.github.evseevda.businesslogicservice.route.entity;
 
-import com.github.evseevda.businesslogicservice.carrier.entity.CarrierEntity;
+import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;
 import lombok.*;
 
 
@@ -10,12 +10,12 @@ import lombok.*;
 @Setter
 @EqualsAndHashCode
 @Builder
-public class RouteEntity {
+public class Route {
 
     private Long id;
     private String startPoint;
     private String destinationPoint;
-    private CarrierEntity carrier;
+    private Carrier carrier;
     private Long durationInMinutes;
 
 }

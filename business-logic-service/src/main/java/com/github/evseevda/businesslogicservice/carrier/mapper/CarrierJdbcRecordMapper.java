@@ -1,7 +1,7 @@
 package com.github.evseevda.businesslogicservice.carrier.mapper;
 
 
-import com.github.evseevda.businesslogicservice.carrier.entity.CarrierEntity;
+import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;
 import com.github.evseevda.businesslogicservice.core.util.mapper.AbstractJdbcRecordMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -11,15 +11,15 @@ import java.sql.SQLException;
 
 @Component
 @RequiredArgsConstructor
-public class CarrierJdbcRecordMapper extends AbstractJdbcRecordMapper<CarrierEntity> {
+public class CarrierJdbcRecordMapper extends AbstractJdbcRecordMapper<Carrier> {
 
     @Override
-    public CarrierEntity extractEntity(ResultSet rs) throws SQLException {
+    public Carrier extractEntity(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
         String companyName = rs.getString("company_name");
         String phone = rs.getString("phone");
 
-        return new CarrierEntity(id, companyName, phone);
+        return new Carrier(id, companyName, phone);
     }
 
 }

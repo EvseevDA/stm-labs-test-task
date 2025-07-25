@@ -1,7 +1,7 @@
 package com.github.evseevda.businesslogicservice.route.repository;
 
 import com.github.evseevda.businesslogicservice.core.util.mapper.JdbcRecordMapper;
-import com.github.evseevda.businesslogicservice.route.entity.RouteEntity;
+import com.github.evseevda.businesslogicservice.route.entity.Route;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -15,17 +15,17 @@ import java.util.Optional;
 public class RouteRepositoryImpl implements RouteRepository {
 
     private final NamedParameterJdbcTemplate jdbcTemplate;
-    private final JdbcRecordMapper<RouteEntity> routeJdbcRecordMapper;
+    private final JdbcRecordMapper<Route> routeJdbcRecordMapper;
 
     @Override
-    public Optional<RouteEntity> findById(Long routeId) {
+    public Optional<Route> findById(Long routeId) {
         String sql = "SELECT * FROM bl.route WHERE id = :routeId";
         Map<String, ?> params = Map.of("routeId", routeId);
         return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractNullableEntity);
     }
 
     @Override
-    public RouteEntity saveNew(RouteEntity entity) {
+    public Route saveNew(Route entity) {
         String sql = """
                 INSERT INTO bl.route (start_point, destination_point, carrier_id, duration_in_minutes)
                 VALUES
@@ -42,7 +42,7 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     @Override
-    public RouteEntity update(RouteEntity entity) {
+    public Route update(Route entity) {
         String sql = """
                 UPDATE bl.route
                 SET
