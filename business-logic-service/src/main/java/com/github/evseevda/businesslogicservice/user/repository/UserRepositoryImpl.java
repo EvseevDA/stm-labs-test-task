@@ -3,6 +3,7 @@ package com.github.evseevda.businesslogicservice.user.repository;
 import com.github.evseevda.businesslogicservice.core.util.mapper.JdbcRecordMapper;
 import com.github.evseevda.businesslogicservice.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -40,4 +41,20 @@ public class UserRepositoryImpl implements UserRepository {
         return jdbcTemplate.query(sql, params, userJdbcRecordMapper::extractNullableEntity);
     }
 
+    @Override
+    public Optional<User> findByLogin(String login) {
+        String sql = "SELECT * FROM bl.app_user WHERE login = :login";
+        Map<String, ?> params = Map.of("login", login);
+        return jdbcTemplate.query(sql, params, userJdbcRecordMapper::extractNullableEntity);
+    }
+
+    @Override
+    public boolean existsByLogin(String login) {
+        String sql = "SELECT EXISTS(SELECT id FROM bl.app_user WHERE login = :login)";
+        Map<String, ?> params = Map.of("login", login);
+        return jdbcTemplate.query(sql, params, rs -> {
+                    return rs.getBoolean("exists");
+                }
+        );
+    }
 }

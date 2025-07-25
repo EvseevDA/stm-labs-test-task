@@ -1,7 +1,10 @@
-package com.github.evseevda.businesslogicservice.core.service;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 26.07.2025
- */public interface CrudService {
+package com.github.evseevda.businesslogicservice.core.service;
+
+
+public interface CrudService<T, ID> {
+
+    T saveNew(T entity);
+    T update(T entity);
+    void delete(ID id);
+
 }

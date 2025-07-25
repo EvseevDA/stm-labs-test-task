@@ -9,5 +9,7 @@ public interface UserRepository {
 
     User saveNew(User user);
     Optional<User> findById(Long userId);
+    Optional<User> findByLogin(String login);
+    boolean existsByLogin(String login);
 
 }

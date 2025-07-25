@@ -1,7 +1,7 @@
-package com.github.evseevda.businesslogicservice.core.exception;
+package com.github.evseevda.businesslogicservice.core.exception.entity;
 
 
-public class EntityNotFoundException extends BlServiceException {
+public class EntityNotFoundException extends EntityException {
 
     private Class<?> entityClass;
     private String identifierName;
