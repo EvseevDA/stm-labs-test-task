@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.user.mapper;
+package com.github.evseevda.businesslogicservice.user.mapper.data;
 
 
 import com.github.evseevda.businesslogicservice.core.util.mapper.JooqRecordMapper;
@@ -17,7 +17,7 @@ public class UserJooqRecordMapper implements JooqRecordMapper<User> {
                 r.get(APP_USER.ID),
                 r.get(APP_USER.LOGIN),
                 r.get(APP_USER.PASSWORD),
-                r.get(APP_USER.FULL_NAME)
+                r.get(APP_USER.FULL_NAME),
         );
     }
 }

@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.carrier.mapper.request;
+package com.github.evseevda.businesslogicservice.carrier.mapper.dto;
 
 import com.github.evseevda.businesslogicservice.carrier.dto.request.CarrierRequestDto;
 import com.github.evseevda.businesslogicservice.carrier.dto.response.CarrierResponseDto;
@@ -6,7 +6,7 @@ import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CarrierMapperImpl implements CarrierMapper {
+public class CarrierDtoMapperImpl implements CarrierDtoMapper {
 
     @Override
     public Carrier fromRequestDto(CarrierRequestDto requestDto) {

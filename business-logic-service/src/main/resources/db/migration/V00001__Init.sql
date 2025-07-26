@@ -1,10 +1,18 @@
 CREATE SCHEMA IF NOT EXISTS bl;
+CREATE SCHEMA IF NOT EXISTS security;
+
+CREATE TABLE security.role(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(128) NOT NULL
+);
 
 CREATE TABLE bl.app_user(
     id BIGSERIAL PRIMARY KEY,
     login VARCHAR(64) UNIQUE NOT NULL,
     password VARCHAR(256) NOT NULL,
-    full_name VARCHAR(512) NOT NULL
+    full_name VARCHAR(512) NOT NULL,
+    role_id INT NOT NULL,
+    FOREIGN KEY (role_id) REFERENCES security.role(id)
 );
 
 CREATE TABLE bl.carrier(

@@ -1,7 +1,12 @@
-package com.github.evseevda.businesslogicservice.auth.annotation;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 27.07.2025
- */public @interface SetupDefaultRoles {
+package com.github.evseevda.businesslogicservice.auth.annotation;
+
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+@Target(ElementType.PARAMETER)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface SetupDefaultRoles {
 }

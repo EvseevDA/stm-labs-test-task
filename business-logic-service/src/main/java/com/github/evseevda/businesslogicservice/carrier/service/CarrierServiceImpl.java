@@ -15,4 +15,8 @@ public class CarrierServiceImpl extends DefaultCrudService<Carrier, Long> implem
         super(crudRepository);
     }
 
+    @Override
+    public Class<Carrier> entityType() {
+        return Carrier.class;
+    }
 }

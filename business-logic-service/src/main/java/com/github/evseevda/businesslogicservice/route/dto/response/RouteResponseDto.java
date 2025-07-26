@@ -1,7 +1,21 @@
-package com.github.evseevda.businesslogicservice.route.dto.response;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 26.07.2025
- */public class RouteResponseDto {
+package com.github.evseevda.businesslogicservice.route.dto.response;
+
+import com.github.evseevda.businesslogicservice.carrier.dto.response.CarrierResponseDto;
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
+public class RouteResponseDto {
+
+    @EqualsAndHashCode.Include
+    private Long id;
+    private String startPoint;
+    private String destinationPoint;
+    private CarrierResponseDto carrier;
+    private Long durationInMillis;
+
 }

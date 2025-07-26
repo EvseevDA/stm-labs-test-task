@@ -1,7 +1,15 @@
-package com.github.evseevda.businesslogicservice.user.mapper.dto;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 26.07.2025
- */public interface UserMapper {
+package com.github.evseevda.businesslogicservice.user.mapper.dto;
+
+
+import com.github.evseevda.businesslogicservice.auth.dto.request.RegistrationRequestDto;
+import com.github.evseevda.businesslogicservice.user.dto.response.PassengerDto;
+import com.github.evseevda.businesslogicservice.user.dto.response.DefaultUserResponseDto;
+import com.github.evseevda.businesslogicservice.user.entity.User;
+
+public interface UserDtoMapper {
+
+    PassengerDto toPassengerDto(User user);
+    DefaultUserResponseDto toDefaultUserResponseDto(User user);
+    User fromRegistrationRequestDto(RegistrationRequestDto requestDto);
+
 }

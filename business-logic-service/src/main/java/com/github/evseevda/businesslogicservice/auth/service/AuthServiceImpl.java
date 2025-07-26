@@ -1,5 +1,6 @@
 package com.github.evseevda.businesslogicservice.auth.service;
 
+import com.github.evseevda.businesslogicservice.auth.annotation.SetupDefaultRoles;
 import com.github.evseevda.businesslogicservice.user.entity.User;
 import com.github.evseevda.businesslogicservice.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public User registerNewUser(User user) {
+    public User registerNewUser(@SetupDefaultRoles User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userService.saveNew(user);
     }

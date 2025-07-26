@@ -1,7 +1,15 @@
-package com.github.evseevda.businesslogicservice.user.entity;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 27.07.2025
- */public class Role {
+package com.github.evseevda.businesslogicservice.user.entity;
+
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+public class Role {
+
+    private Long id;
+    private String name;
+
 }

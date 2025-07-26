@@ -1,7 +1,27 @@
-package com.github.evseevda.businesslogicservice.carrier.controller;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 26.07.2025
- */public class CarrierRestController {
+package com.github.evseevda.businesslogicservice.carrier.controller;
+
+
+import com.github.evseevda.businesslogicservice.carrier.dto.request.CarrierRequestDto;
+import com.github.evseevda.businesslogicservice.carrier.dto.response.CarrierResponseDto;
+import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;
+import com.github.evseevda.businesslogicservice.core.controller.AbstractCrudRestController;
+import com.github.evseevda.businesslogicservice.core.service.CrudService;
+import com.github.evseevda.businesslogicservice.core.util.mapper.RequestDtoMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/carrier")
+public class CarrierRestController
+        extends AbstractCrudRestController<Carrier, Long, CarrierRequestDto, CarrierResponseDto> {
+
+    @Autowired
+    public CarrierRestController(
+            CrudService<Carrier, Long> service,
+            RequestDtoMapper<Carrier, Long, CarrierRequestDto, CarrierResponseDto> mapper
+    ) {
+        super(service, mapper);
+    }
+
 }

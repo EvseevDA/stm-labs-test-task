@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.carrier.mapper.jdbc;
+package com.github.evseevda.businesslogicservice.carrier.mapper.data;
 
 
 import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;

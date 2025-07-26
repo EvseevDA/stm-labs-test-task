@@ -14,4 +14,8 @@ public class RouteServiceImpl extends DefaultCrudService<Route, Long> implements
         super(crudRepository);
     }
 
+    @Override
+    public Class<Route> entityType() {
+        return Route.class;
+    }
 }

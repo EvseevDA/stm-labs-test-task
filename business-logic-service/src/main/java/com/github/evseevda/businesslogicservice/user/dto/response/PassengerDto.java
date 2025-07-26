@@ -1,7 +1,17 @@
-package com.github.evseevda.businesslogicservice.user.dto.response;/**
- * TODO Class Description
- *
- * @author Дмитрий Евсеев
- * @since 26.07.2025
- */public class PassengerResponseDto {
+package com.github.evseevda.businesslogicservice.user.dto.response;
+
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
+public class PassengerDto {
+
+    @EqualsAndHashCode.Include
+    private Long id;
+    private String fullName;
+
 }

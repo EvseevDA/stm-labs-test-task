@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.carrier.dto.out;
+package com.github.evseevda.businesslogicservice.carrier.dto.response;
 
 import lombok.*;
 
@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-public class CarrierOutputDto {
+public class CarrierResponseDto {
 
     @EqualsAndHashCode.Include
     private Long id;
