@@ -8,7 +8,7 @@
         <version>3.5.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.github.evseevda</groupId>
+    <groupId>com.github.evseevda.stm-labs-test-task</groupId>
     <artifactId>business-logic-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>business-logic-service</name>
