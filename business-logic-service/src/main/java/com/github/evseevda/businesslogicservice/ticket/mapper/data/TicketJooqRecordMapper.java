@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.ticket.mapper;
+package com.github.evseevda.businesslogicservice.ticket.mapper.data;
 
 import com.github.evseevda.businesslogicservice.core.util.mapper.JooqRecordMapper;
 import com.github.evseevda.businesslogicservice.route.entity.Route;

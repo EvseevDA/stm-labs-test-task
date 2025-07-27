@@ -1,11 +1,12 @@
 package com.github.evseevda.businesslogicservice.core.service;
 
+import com.github.evseevda.businesslogicservice.core.exception.entity.EntityNotFoundException;
 import com.github.evseevda.businesslogicservice.core.repository.CrudRepository;
 import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
-public class DefaultCrudService<T, ID> implements CrudService<T, ID> {
+public abstract class DefaultCrudService<T, ID> implements CrudService<T, ID> {
 
     private final CrudRepository<T, ID> crudRepository;
 
@@ -22,5 +23,12 @@ public class DefaultCrudService<T, ID> implements CrudService<T, ID> {
     @Override
     public void delete(ID id) {
         crudRepository.delete(id);
+    }
+
+    @Override
+    public T findById(ID id) {
+        return crudRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(entityType(), "id", String.valueOf(id)));
     }
 }

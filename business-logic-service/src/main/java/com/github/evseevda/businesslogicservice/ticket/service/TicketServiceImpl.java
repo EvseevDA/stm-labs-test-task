@@ -45,4 +45,8 @@ public class TicketServiceImpl extends DefaultCrudService<Ticket, Long> implemen
         return ticketRepository.findAllTicketsByPassengerId(userService.currentUser().getId());
     }
 
+    @Override
+    public Class<Ticket> entityType() {
+        return Ticket.class;
+    }
 }

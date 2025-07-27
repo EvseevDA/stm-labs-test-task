@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.carrier.mapper;
+package com.github.evseevda.businesslogicservice.carrier.mapper.data;
 
 import com.github.evseevda.businesslogicservice.carrier.entity.Carrier;
 import com.github.evseevda.businesslogicservice.core.util.mapper.JooqRecordMapper;

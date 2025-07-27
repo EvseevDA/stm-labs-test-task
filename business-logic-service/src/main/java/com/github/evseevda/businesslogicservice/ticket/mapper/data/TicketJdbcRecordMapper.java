@@ -1,4 +1,4 @@
-package com.github.evseevda.businesslogicservice.ticket.mapper;
+package com.github.evseevda.businesslogicservice.ticket.mapper.data;
 
 import com.github.evseevda.businesslogicservice.core.util.mapper.AbstractJdbcRecordMapper;
 import com.github.evseevda.businesslogicservice.route.entity.Route;
@@ -31,7 +31,7 @@ public class TicketJdbcRecordMapper extends AbstractJdbcRecordMapper<Ticket> {
         BigDecimal cost = rs.getObject("cost", BigDecimal.class);
         Long passengerId = rs.getObject("passenger_id", Long.class);
 
-        Route route = routeRepository.findById(routeId).orElseThrow();
+        Route route = routeRepository.findById(routeId).get();
         User passenger = userRepository.findById(passengerId).orElse(null);
 
         return Ticket.builder()
