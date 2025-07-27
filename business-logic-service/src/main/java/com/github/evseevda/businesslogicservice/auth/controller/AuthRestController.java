@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.function.Function;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -23,11 +25,24 @@ public class AuthRestController {
     private final AuthService authService;
     private final UserDtoMapper userMapper;
 
-    @PostMapping("/registration")
-    public ResponseEntity<DefaultUserResponseDto> register(
+    @PostMapping("/registration/user")
+    public ResponseEntity<DefaultUserResponseDto> registerUser(
             @RequestBody @Valid RegistrationRequestDto requestDto
     ) {
-        User registered = authService.registerNewUser(userMapper.fromRegistrationRequestDto(requestDto));
+        User newUser = userMapper.fromRegistrationRequestDto(requestDto);
+        return register(newUser, authService::registerNewUser);
+    }
+
+    @PostMapping("/registration/admin")
+    public ResponseEntity<DefaultUserResponseDto> registerAdmin(
+            @RequestBody @Valid RegistrationRequestDto requestDto
+    ) {
+        User newUser = userMapper.fromRegistrationRequestDto(requestDto);
+        return register(newUser, authService::registerAdmin);
+    }
+
+    private ResponseEntity<DefaultUserResponseDto> register(User newUser, Function<User, User> registerMethod) {
+        User registered = registerMethod.apply(newUser);
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(userMapper.toDefaultUserResponseDto(registered));
     }

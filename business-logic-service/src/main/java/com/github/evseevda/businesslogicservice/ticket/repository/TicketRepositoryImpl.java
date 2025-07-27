@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.github.evseevda.businesslogicservice.tables.Carrier.CARRIER;
-import static com.github.evseevda.businesslogicservice.tables.Route.ROUTE;
-import static com.github.evseevda.businesslogicservice.tables.Ticket.TICKET;
+import static com.github.evseevda.businesslogicservice.bl.tables.Carrier.CARRIER;
+import static com.github.evseevda.businesslogicservice.bl.tables.Route.ROUTE;
+import static com.github.evseevda.businesslogicservice.bl.tables.Ticket.TICKET;
 
 @Repository
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                         TICKET.route().DURATION_IN_MINUTES,
 
                         ROUTE.carrier().ID,
-                        ROUTE.carrier().TITLE,
+                        ROUTE.carrier().COMPANY_NAME,
                         ROUTE.carrier().PHONE
                 )
                 .from(TICKET.join(ROUTE).on(TICKET.ROUTE_ID.equal(ROUTE.ID))
@@ -84,7 +84,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
         String carrierName = filter.getCarrierName();
         if (carrierName != null) {
-            baseQuery.and(CARRIER.TITLE.containsIgnoreCase(carrierName));
+            baseQuery.and(CARRIER.COMPANY_NAME.containsIgnoreCase(carrierName));
         }
 
         return baseQuery;

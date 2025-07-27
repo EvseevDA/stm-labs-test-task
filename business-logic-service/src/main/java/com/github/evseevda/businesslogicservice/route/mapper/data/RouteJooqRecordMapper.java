@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.Record;
 import org.springframework.stereotype.Component;
 
-import static com.github.evseevda.businesslogicservice.tables.Route.ROUTE;
+import static com.github.evseevda.businesslogicservice.bl.tables.Route.ROUTE;
 
 
 @Component

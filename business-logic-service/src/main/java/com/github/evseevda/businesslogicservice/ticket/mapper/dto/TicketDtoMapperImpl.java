@@ -51,7 +51,6 @@ public class TicketDtoMapperImpl implements TicketDtoMapper {
                 .dateTime(ticket.getDateTimeUtc())
                 .seatNumber(ticket.getSeatNumber())
                 .cost(ticket.getCost())
-                .passenger(userDtoMapper.toPassengerDto(ticket.getPassenger()))
                 .build();
     }
 }

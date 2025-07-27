@@ -9,6 +9,13 @@ spring:
     default-schema: bll
     enabled: true
     baseline-on-migrate: true
-    schemas: bll
+    schemas: bll,security
 server:
   port: 8082
+
+security:
+  user:
+    roles:
+      default: PURCHASER
+      purchaser: PURCHASER
+      admin: ADMIN

@@ -1,6 +1,5 @@
 package com.github.evseevda.businesslogicservice.user.mapper.data;
 
-import com.github.evseevda.businesslogicservice.core.exception.entity.EntityNotFoundException;
 import com.github.evseevda.businesslogicservice.core.util.mapper.AbstractJdbcRecordMapper;
 import com.github.evseevda.businesslogicservice.user.entity.Role;
 import com.github.evseevda.businesslogicservice.user.entity.User;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
