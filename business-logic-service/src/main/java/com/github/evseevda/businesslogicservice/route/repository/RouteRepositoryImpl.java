@@ -42,7 +42,7 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     @Override
-    public Route update(Route entity) {
+    public Optional<Route> update(Route entity) {
         String sql = """
                 UPDATE bl.route
                 SET
@@ -59,7 +59,7 @@ public class RouteRepositoryImpl implements RouteRepository {
                 "carrierId", entity.getCarrier().getId(),
                 "durationInMinutes", entity.getDurationInMinutes()
         );
-        return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractNullableEntity);
     }
 
     @Override

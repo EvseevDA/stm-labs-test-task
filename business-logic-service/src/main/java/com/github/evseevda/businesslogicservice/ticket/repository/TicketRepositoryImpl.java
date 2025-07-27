@@ -91,13 +91,18 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public void markAsBought(Long ticketId, Long passengerId) {
-        String sql = "UPDATE bl.ticket SET passenger_id = :passengerId WHERE id = :ticketId";
+    public Optional<Ticket> markAsBought(Long ticketId, Long passengerId) {
+        String sql = """
+            UPDATE bl.ticket
+            SET passenger_id = :passengerId 
+            WHERE id = :ticketId
+            RETURNING *
+        """;
         Map<String, ?> params = Map.of(
                 "ticketId", ticketId,
                 "passengerId", passengerId
         );
-        jdbcTemplate.update(sql, params);
+        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNullableEntity);
     }
 
     @Override
@@ -125,7 +130,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Ticket update(Ticket entity) {
+    public Optional<Ticket> update(Ticket entity) {
         String sql = """
                 UPDATE bl.ticket
                 SET
@@ -142,7 +147,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                 "seatNumber", entity.getSeatNumber(),
                 "cost", entity.getCost()
         );
-        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNullableEntity);
     }
 
     @Override

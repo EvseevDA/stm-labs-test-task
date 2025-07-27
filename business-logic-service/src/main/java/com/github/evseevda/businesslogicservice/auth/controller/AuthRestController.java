@@ -6,6 +6,8 @@ import com.github.evseevda.businesslogicservice.auth.service.AuthService;
 import com.github.evseevda.businesslogicservice.user.dto.response.DefaultUserResponseDto;
 import com.github.evseevda.businesslogicservice.user.entity.User;
 import com.github.evseevda.businesslogicservice.user.mapper.dto.UserDtoMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.function.Function;
 
+@Tag(name = "Аутентификация")
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -25,6 +28,9 @@ public class AuthRestController {
     private final AuthService authService;
     private final UserDtoMapper userMapper;
 
+    @Operation(
+            summary = "Регистрация пользователя с правами покупателя"
+    )
     @PostMapping("/registration/user")
     public ResponseEntity<DefaultUserResponseDto> registerUser(
             @RequestBody @Valid RegistrationRequestDto requestDto
@@ -33,6 +39,9 @@ public class AuthRestController {
         return register(newUser, authService::registerNewUser);
     }
 
+    @Operation(
+            summary = "Регистрация пользователя с правами администратора"
+    )
     @PostMapping("/registration/admin")
     public ResponseEntity<DefaultUserResponseDto> registerAdmin(
             @RequestBody @Valid RegistrationRequestDto requestDto

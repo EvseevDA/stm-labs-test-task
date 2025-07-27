@@ -7,10 +7,12 @@ import com.github.evseevda.businesslogicservice.core.util.mapper.RequestDtoMappe
 import com.github.evseevda.businesslogicservice.route.dto.request.RouteRequestDto;
 import com.github.evseevda.businesslogicservice.route.dto.response.RouteResponseDto;
 import com.github.evseevda.businesslogicservice.route.entity.Route;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Маршруты")
 @RestController
 @RequestMapping("/api/route")
 public class RouteRestController

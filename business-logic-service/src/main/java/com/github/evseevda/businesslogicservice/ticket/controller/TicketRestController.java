@@ -8,6 +8,9 @@ import com.github.evseevda.businesslogicservice.ticket.dto.response.TicketRespon
 import com.github.evseevda.businesslogicservice.ticket.entity.Ticket;
 import com.github.evseevda.businesslogicservice.ticket.search.TicketSearchFilter;
 import com.github.evseevda.businesslogicservice.ticket.service.TicketService;
+import com.github.evseevda.businesslogicservice.user.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,20 +20,24 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Tag(name = "Билеты")
 @RestController
 @RequestMapping("/api/ticket")
 public class TicketRestController
         extends AbstractCrudRestController<Ticket, Long, TicketRequestDto, TicketResponseDto> {
 
     private final TicketService service;
+    private final UserService userService;
 
     @Autowired
     public TicketRestController(
             TicketService service,
+            UserService userService,
             RequestDtoMapper<Ticket, Long, TicketRequestDto, TicketResponseDto> mapper
     ) {
         super(service, mapper);
         this.service = service;
+        this.userService = userService;
     }
 
     /**
@@ -49,6 +56,9 @@ public class TicketRestController
         }
     }
 
+    @Operation(
+            summary = "Получение всех доступных для покупки билетов"
+    )
     @GetMapping("/all-available")
     public ResponseEntity<List<TicketResponseDto>> getAllAvailableTickets(
             @ModelAttribute PageRequest pageRequest,
@@ -60,15 +70,20 @@ public class TicketRestController
         return ResponseEntity.ok(tickets);
     }
 
-    @PatchMapping("/purchase/{ticketId}/{passengerId}")
-    public ResponseEntity<Void> buyTicket(
-            @NotNull @PositiveOrZero @PathVariable Long ticketId,
-            @NotNull @PositiveOrZero @PathVariable Long passengerId
+    @Operation(
+            summary = "Покупка билета"
+    )
+    @PatchMapping("/purchase/{ticketId}")
+    public ResponseEntity<TicketResponseDto> buyTicket(
+            @NotNull @PositiveOrZero @PathVariable Long ticketId
     ) {
-        service.buyTicket(ticketId, passengerId);
-        return ResponseEntity.noContent().build();
+        Ticket ticket = service.buyTicket(ticketId, userService.currentUser().getId());
+        return ResponseEntity.ok(mapper.toResponseDto(ticket));
     }
 
+    @Operation(
+            summary = "Получение купленных билетов текущего пользователя"
+    )
     @GetMapping("/my")
     public ResponseEntity<List<TicketResponseDto>> getCurrentUserTickets() {
         List<TicketResponseDto> tickets = service.findCurrentUserTickets()

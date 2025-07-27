@@ -40,7 +40,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
     }
 
     @Override
-    public Carrier update(Carrier entity) {
+    public Optional<Carrier> update(Carrier entity) {
         String sql = """
                 UPDATE bl.carrier
                 SET company_name = :companyName, phone = :phone
@@ -52,7 +52,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
                 "companyName", entity.getCompanyName(),
                 "phone", entity.getPhone()
         );
-        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractNullableEntity);
     }
 
     @Override

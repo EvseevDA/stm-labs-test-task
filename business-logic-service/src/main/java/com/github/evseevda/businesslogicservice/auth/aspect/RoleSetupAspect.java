@@ -31,7 +31,7 @@ public class RoleSetupAspect {
             )
         )
     """)
-    public void handleSetupRole(JoinPoint joinPoint) {
+    public void setupRole(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 
         Object[] args = joinPoint.getArgs();

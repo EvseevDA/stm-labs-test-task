@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 public interface TicketService extends CrudService<Ticket, Long> {
 
     Stream<Ticket> findAllAvailableTickets(PageRequest pageRequest, TicketSearchFilter filter);
-    void buyTicket(Long ticketId, Long passengerId);
+    Ticket buyTicket(Long ticketId, Long passengerId);
     Stream<Ticket> findCurrentUserTickets();
 
 }

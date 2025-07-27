@@ -17,7 +17,9 @@ public abstract class DefaultCrudService<T, ID> implements CrudService<T, ID> {
 
     @Override
     public T update(T entity) {
-        return crudRepository.update(entity);
+        return crudRepository
+                .update(entity)
+                .orElseThrow(() -> new EntityNotFoundException(entityType()));
     }
 
     @Override
@@ -31,4 +33,6 @@ public abstract class DefaultCrudService<T, ID> implements CrudService<T, ID> {
                 .findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(entityType(), "id", String.valueOf(id)));
     }
+
+    protected abstract Class<T> entityType();
 }

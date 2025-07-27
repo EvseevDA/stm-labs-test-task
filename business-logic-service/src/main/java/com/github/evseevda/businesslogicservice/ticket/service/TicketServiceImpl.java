@@ -1,5 +1,6 @@
 package com.github.evseevda.businesslogicservice.ticket.service;
 
+import com.github.evseevda.businesslogicservice.core.exception.entity.EntityNotFoundException;
 import com.github.evseevda.businesslogicservice.core.repository.CrudRepository;
 import com.github.evseevda.businesslogicservice.core.service.DefaultCrudService;
 import com.github.evseevda.businesslogicservice.ticket.entity.Ticket;
@@ -36,8 +37,9 @@ public class TicketServiceImpl extends DefaultCrudService<Ticket, Long> implemen
     }
 
     @Override
-    public void buyTicket(Long ticketId, Long passengerId) {
-        ticketRepository.markAsBought(ticketId, passengerId);
+    public Ticket buyTicket(Long ticketId, Long passengerId) {
+        return ticketRepository.markAsBought(ticketId, passengerId)
+                .orElseThrow(() -> new EntityNotFoundException(entityType(), "id", String.valueOf(ticketId)));
     }
 
     @Override

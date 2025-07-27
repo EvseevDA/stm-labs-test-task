@@ -10,12 +10,29 @@ spring:
     enabled: true
     baseline-on-migrate: true
     schemas: bll,security
+  data:
+    redis:
+      host: localhost
+      port: 6379
+
 server:
   port: 8082
+
+cache:
+  tickets:
+    list:
+      lifetime: 1h
 
 security:
   user:
     roles:
-      default: PURCHASER
-      purchaser: PURCHASER
-      admin: ADMIN
+      default: ROLE_PURCHASER
+      purchaser: ROLE_PURCHASER
+      admin: ROLE_ADMIN
+
+jwt:
+  secret: 62629f09d731dfbab87a70173ff7ca7c11847e0c247faede10e883295ade17f4095bd61024c1712e41ee4831c201d956e2e29d4df2dd7a4d67ac9ed00ca913f6bc1dc66fe9f92217f64cf8d75ceb209b65879812d6d2f5f5248e243fbe59eb13abf1baf948d8728c1d990efcc990634b49ac6cb60c3f1c4c57422428337fee812283154aa05f926cd7fcec567f910e0176e390aa05b2c5edf69297c925dd8636766b161fa96d974256c6287f39a61317bea2e45b302b9749b2401423b9a2c08d7763ba637d7379b5c3fa7147f6468b3b47b18917903f3667452c36b2d4bb54f58cb8266ca02255a1fc2be9ef502eb51a80de8953f3bea2bff1dea4777273e8d4
+  access:
+    lifetime: 15m
+  refresh:
+    lifetime: 15d
