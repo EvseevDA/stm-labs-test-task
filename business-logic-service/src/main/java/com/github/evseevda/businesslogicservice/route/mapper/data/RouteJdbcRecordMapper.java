@@ -24,7 +24,7 @@ public class RouteJdbcRecordMapper extends AbstractJdbcRecordMapper<Route> {
         Long carrierId = rs.getLong("carrier_id");
         Long durationInMinutes = rs.getLong("duration_in_minutes");
 
-        Carrier carrier = carrierRepository.findById(carrierId).orElseThrow();
+        Carrier carrier = carrierRepository.findById(carrierId).get();
 
         return Route.builder()
                 .id(id)

@@ -183,6 +183,14 @@
                         <database>
                             <name>org.jooq.meta.postgres.PostgresDatabase</name>
                             <includes>.*</includes>
+                            <schemata>
+                                <schema>
+                                    <inputSchema>bl</inputSchema>
+                                </schema>
+                                <schema>
+                                    <inputSchema>security</inputSchema>
+                                </schema>
+                            </schemata>
                         </database>
                         <target>
                             <packageName>com.github.evseevda.businesslogicservice</packageName>

@@ -1,7 +1,6 @@
 package com.github.evseevda.businesslogicservice.ticket.dto.response;
 
 import com.github.evseevda.businesslogicservice.route.dto.response.RouteResponseDto;
-import com.github.evseevda.businesslogicservice.user.dto.response.PassengerDto;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -20,6 +19,5 @@ public class TicketResponseDto {
     private LocalDateTime dateTime;
     private Integer seatNumber;
     private BigDecimal cost;
-    private PassengerDto passenger;
 
 }

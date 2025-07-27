@@ -6,5 +6,6 @@ import com.github.evseevda.businesslogicservice.user.entity.User;
 public interface AuthService {
 
     User registerNewUser(User user);
+    User registerAdmin(User admin);
 
 }
