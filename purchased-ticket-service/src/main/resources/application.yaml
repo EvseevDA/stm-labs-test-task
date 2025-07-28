@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: purchased-ticket-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/transport_ticket_purchased_ticket_service_db
+    username: postgres
+    password: postgres
+  flyway:
+    default-schema: main
+    baseline-on-migrate: true
+    schemas: main
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      purchased-ticket-group-id: purchased-ticket
+    backoff:
+      interval: 200ms
+      attempts: 5
+    topic:
+      purchased-ticket: purchased-ticket
+
+server:
+  port: 8082

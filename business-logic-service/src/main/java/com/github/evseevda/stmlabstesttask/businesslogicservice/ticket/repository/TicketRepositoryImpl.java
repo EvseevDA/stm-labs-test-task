@@ -106,6 +106,15 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
+    public Boolean hasPassenger(Long ticketId) {
+        String sql = "SELECT EXISTS (SELECT 1 FROM bl.ticket WHERE id = :ticketId AND passenger_id IS NOT NULL)";
+        Map<String, ?> params = Map.of(
+                "ticketId", ticketId
+        );
+        return jdbcTemplate.queryForObject(sql, params, Boolean.class);
+    }
+
+    @Override
     public Stream<Ticket> findAllTicketsByPassengerId(Long passengerId) {
         String sql = "SELECT * FROM bl.ticket WHERE passenger_id = :passengerId";
         Map<String, ?> params = Map.of("passengerId", passengerId);

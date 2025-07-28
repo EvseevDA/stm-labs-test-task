@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -19,6 +20,7 @@ import java.util.stream.Stream;
 
 @Aspect
 @Component
+@Order(1)
 public class TicketsCacheAspect {
 
     private final UserService userService;

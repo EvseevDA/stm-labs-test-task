@@ -14,9 +14,13 @@ spring:
     redis:
       host: localhost
       port: 6379
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic:
+      purchased-ticket: purchased-ticket
 
 server:
-  port: 8082
+  port: 8081
 
 cache:
   tickets:

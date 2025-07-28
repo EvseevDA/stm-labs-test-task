@@ -43,6 +43,11 @@ public class TicketServiceImpl extends DefaultCrudService<Ticket, Long> implemen
     }
 
     @Override
+    public Boolean hasPassenger(Long ticketId) {
+        return ticketRepository.hasPassenger(ticketId);
+    }
+
+    @Override
     public Stream<Ticket> findCurrentUserTickets() {
         return ticketRepository.findAllTicketsByPassengerId(userService.currentUser().getId());
     }

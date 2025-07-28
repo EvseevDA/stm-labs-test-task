@@ -13,6 +13,7 @@ public interface TicketRepository extends CrudRepository<Ticket, Long> {
 
     Stream<Ticket> findAllAvailableTickets(PageRequest pageRequest, TicketSearchFilter filter);
     Optional<Ticket> markAsBought(Long ticketId, Long passengerId);
+    Boolean hasPassenger(Long ticketId);
     Stream<Ticket> findAllTicketsByPassengerId(Long passengerId);
 
 }

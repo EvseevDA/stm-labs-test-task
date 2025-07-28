@@ -12,6 +12,7 @@ public interface TicketService extends CrudService<Ticket, Long> {
 
     Stream<Ticket> findAllAvailableTickets(PageRequest pageRequest, TicketSearchFilter filter);
     Ticket buyTicket(Long ticketId, Long passengerId);
+    Boolean hasPassenger(Long ticketId);
     Stream<Ticket> findCurrentUserTickets();
 
 }
