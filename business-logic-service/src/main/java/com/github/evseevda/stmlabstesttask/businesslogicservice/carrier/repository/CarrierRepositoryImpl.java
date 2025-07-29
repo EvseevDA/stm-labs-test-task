@@ -36,7 +36,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
                 "companyName", entity.getCompanyName(),
                 "phone", entity.getPhone()
         );
-        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override

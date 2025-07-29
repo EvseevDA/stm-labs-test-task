@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.github.evseevda.businesslogicservice.bl.tables.Carrier.CARRIER;
-import static com.github.evseevda.businesslogicservice.bl.tables.Route.ROUTE;
-import static com.github.evseevda.businesslogicservice.bl.tables.Ticket.TICKET;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Carrier.CARRIER;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Route.ROUTE;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Ticket.TICKET;
 
 @Repository
 @RequiredArgsConstructor
@@ -118,7 +118,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     public Stream<Ticket> findAllTicketsByPassengerId(Long passengerId) {
         String sql = "SELECT * FROM bl.ticket WHERE passenger_id = :passengerId";
         Map<String, ?> params = Map.of("passengerId", passengerId);
-        return jdbcTemplate.queryForStream(sql, params, (rs, rowNum) -> ticketJdbcRecordMapper.extractEntity(rs));
+        return jdbcTemplate.queryForStream(sql, params, (rs, rowNum) -> ticketJdbcRecordMapper.extractNonNullableEntity(rs));
     }
 
     @Override
@@ -135,7 +135,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                 "seatNumber", entity.getSeatNumber(),
                 "cost", entity.getCost()
         );
-        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override

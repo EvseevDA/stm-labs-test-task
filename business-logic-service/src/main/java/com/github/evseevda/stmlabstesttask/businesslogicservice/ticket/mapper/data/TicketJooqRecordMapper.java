@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.Record;
 import org.springframework.stereotype.Component;
 
-import static com.github.evseevda.businesslogicservice.bl.tables.Ticket.TICKET;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Ticket.TICKET;
 
 @Component
 @RequiredArgsConstructor

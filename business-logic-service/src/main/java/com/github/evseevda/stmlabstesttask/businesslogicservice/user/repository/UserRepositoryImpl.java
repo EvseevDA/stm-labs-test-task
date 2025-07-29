@@ -33,7 +33,7 @@ public class UserRepositoryImpl implements UserRepository {
                 "roleId", user.getRole().getId()
         );
 
-        return jdbcTemplate.query(sql, params, userJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, userJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
@@ -55,6 +55,7 @@ public class UserRepositoryImpl implements UserRepository {
         String sql = "SELECT EXISTS(SELECT id FROM bl.app_user WHERE login = :login)";
         Map<String, ?> params = Map.of("login", login);
         return jdbcTemplate.query(sql, params, rs -> {
+                    rs.next();
                     return rs.getBoolean("exists");
                 }
         );

@@ -55,6 +55,7 @@ public class AbstractCrudRestController<E, ID, IN, OUT> {
                     )
             }
     )
+
     @PutMapping("/{id}")
     public ResponseEntity<OUT> update(
             @NotNull @PathVariable ID id,

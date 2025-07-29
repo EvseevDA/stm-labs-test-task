@@ -45,7 +45,9 @@ public class SecurityConfig {
                                         "/api/ticket/all-available",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
-                                        "/actuator/health"
+                                        "/actuator/health",
+                                        "/api/auth",
+                                        "/api/auth/new-access-token"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/api/auth/registration/admin"

@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface JdbcRecordMapper<T> {
 
-    T extractEntity(ResultSet rs) throws SQLException;
+    T extractNonNullableEntity(ResultSet rs) throws SQLException;
     Optional<T> extractNullableEntity(ResultSet rs) throws SQLException;
 
 }

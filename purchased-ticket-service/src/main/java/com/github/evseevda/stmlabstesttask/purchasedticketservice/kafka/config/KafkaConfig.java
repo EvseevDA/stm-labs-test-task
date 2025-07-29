@@ -11,8 +11,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import org.springframework.kafka.support.serializer.JsonSerializer;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,13 +21,13 @@ import java.util.Map;
 public class KafkaConfig {
 
     private final String bootstrapAddress;
-    private final Integer backoffInterval;
+    private final Duration backoffInterval;
     private final Integer backoffAttempts;
     private final String purchasedTicketGroupId;
 
     public KafkaConfig(
             @Value("${spring.kafka.bootstrap-servers}") String bootstrapAddress,
-            @Value("${spring.kafka.backoff.interval}") Integer backoffInterval,
+            @Value("${spring.kafka.backoff.interval}") Duration backoffInterval,
             @Value("${spring.kafka.backoff.attempts}") Integer backoffAttempts,
             @Value("${spring.kafka.consumer.purchased-ticket-group-id}") String purchasedTicketGroupId
     ) {

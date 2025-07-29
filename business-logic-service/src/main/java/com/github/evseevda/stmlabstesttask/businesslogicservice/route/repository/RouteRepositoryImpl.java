@@ -38,7 +38,7 @@ public class RouteRepositoryImpl implements RouteRepository {
                 "carrierId", entity.getCarrier().getId(),
                 "durationInMinutes", entity.getDurationInMinutes()
         );
-        return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override

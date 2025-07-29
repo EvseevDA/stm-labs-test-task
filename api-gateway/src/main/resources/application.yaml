@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+            - id: blService
+              uri: lb://BL-SERVICE
+              predicates:
+                - Path=/api/**
+
+server:
+  port: 8080

@@ -20,7 +20,7 @@ public class TicketEventListener {
     @Autowired
     public TicketEventListener(
             KafkaAdapter kafkaAdapter,
-            @Value("${spring.kafka.topic.purchased-ticket}") String purchasedTicketTopic
+            @Value("${spring.kafka.topic.purchased-ticket.name}") String purchasedTicketTopic
     ) {
         this.kafkaAdapter = kafkaAdapter;
         this.purchasedTicketTopic = purchasedTicketTopic;

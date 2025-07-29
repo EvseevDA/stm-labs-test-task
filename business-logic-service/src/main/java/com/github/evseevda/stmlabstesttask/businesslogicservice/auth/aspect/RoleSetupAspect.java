@@ -23,30 +23,26 @@ public class RoleSetupAspect {
     private final Environment environment;
 
     @Before("""
-        execution(
-            * com.github.evseevda.stmlabstesttask.businesslogicservice.auth.service.AuthService.register*(
-                ..,
-                @com.github.evseevda.stmlabstesttask.businesslogicservice.auth.aspect.annotation.SetupRole (*),
-                ..
-            )
-        )
-    """)
+                execution(
+                    * com.github.evseevda.stmlabstesttask.businesslogicservice.auth.service.AuthenticationService.register*(
+                        com.github.evseevda.stmlabstesttask.businesslogicservice.user.entity.User,
+                        ..
+                    )
+                )
+            """)
     public void setupRole(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
 
-        Object[] args = joinPoint.getArgs();
+        User user = ((User) joinPoint.getArgs()[0]);
         Annotation[][] parameterAnnotations = signature.getMethod().getParameterAnnotations();
 
-        for (int i = 0; i < args.length; i++) {
-            if (args[i] instanceof User user) {
-                for (Annotation annotation : parameterAnnotations[i]) {
-                    if (annotation instanceof SetupRole setupRole) {
-                        String resolvedRole = environment.resolvePlaceholders(setupRole.value());
-                        user.setRole(roleService.findRoleByName(resolvedRole));
-                    }
-                }
+        for (Annotation annotation : parameterAnnotations[0]) {
+            if (annotation instanceof SetupRole setupRole) {
+                String resolvedRole = environment.resolvePlaceholders(setupRole.value());
+                user.setRole(roleService.findRoleByName(resolvedRole));
             }
         }
+
     }
 
 

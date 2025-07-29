@@ -6,10 +6,9 @@ spring:
     username: postgres
     password: postgres
   flyway:
-    default-schema: bll
     enabled: true
     baseline-on-migrate: true
-    schemas: bll,security
+    schemas: bl,security
   data:
     redis:
       host: localhost
@@ -17,7 +16,10 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
     topic:
-      purchased-ticket: purchased-ticket
+      purchased-ticket:
+        name: purchased-ticket
+        partitions: 1
+        replication-factor: 1
 
 server:
   port: 8081
