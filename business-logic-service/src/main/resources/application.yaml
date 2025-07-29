@@ -10,12 +10,34 @@ spring:
     enabled: true
     baseline-on-migrate: true
     schemas: bll,security
+  data:
+    redis:
+      host: localhost
+      port: 6379
+  kafka:
+    bootstrap-servers: localhost:9092
+    topic:
+      purchased-ticket: purchased-ticket
+
 server:
-  port: 8082
+  port: 8081
+
+cache:
+  tickets:
+    list:
+      lifetime: 1h
 
 security:
   user:
     roles:
-      default: PURCHASER
-      purchaser: PURCHASER
-      admin: ADMIN
+      default: ROLE_PURCHASER
+      purchaser: ROLE_PURCHASER
+      admin: ROLE_ADMIN
+
+jwt:
+  access:
+    secret: 00fa233fa14a982747ae324cac254751d11bb96ae0c7d377442fd34b026a9b22
+    lifetime: 15m
+  refresh:
+    secret: 6b67ebe56aa984be2d8f218f3bbea2faa65e8530fba95284ab796c2884e25567
+    lifetime: 15d
