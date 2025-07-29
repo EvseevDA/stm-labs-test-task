@@ -2,7 +2,7 @@ package com.github.evseevda.stmlabstesttask.businesslogicservice.user.service;
 
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.exception.entity.EntityNotFoundException;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.entity.User;
-import com.github.evseevda.stmlabstesttask.businesslogicservice.user.exception.LoginAlreadyExistsException;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.user.exception.UserAlreadyExistsException;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,7 +16,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public User saveNew(User user) throws LoginAlreadyExistsException {
+    public User saveNew(User user) throws UserAlreadyExistsException {
         return userRepository.saveNew(user);
     }
 

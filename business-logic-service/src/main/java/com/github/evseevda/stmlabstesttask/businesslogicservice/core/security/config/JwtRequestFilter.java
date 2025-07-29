@@ -1,5 +1,6 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.core.security.config;
 
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.util.JwtTokenType;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.util.JwtUtils;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.exception.security.InvalidJwtException;
 import io.jsonwebtoken.JwtException;
@@ -16,6 +17,9 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.auth.util.JwtTokenClaim.LOGIN;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.auth.util.JwtTokenClaim.ROLE;
 
 @Component
 @RequiredArgsConstructor
@@ -44,7 +48,8 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private String extractLogin(String token) {
         try {
-            return jwtUtils.getLogin(token);
+            return jwtUtils.claimsOf(token, JwtTokenType.ACCESS)
+                    .getClaim(LOGIN, String.class);
         } catch (JwtException e) {
             throw new InvalidJwtException("Access token is not valid");
         }
@@ -52,10 +57,12 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     private void setAuthentication(String login, String jwt) {
         if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            String role = jwtUtils.claimsOf(jwt, JwtTokenType.ACCESS)
+                    .getClaim(ROLE, String.class);
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     login,
                     null,
-                    List.of(new SimpleGrantedAuthority(jwtUtils.getRole(jwt)))
+                    List.of(new SimpleGrantedAuthority(role))
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }

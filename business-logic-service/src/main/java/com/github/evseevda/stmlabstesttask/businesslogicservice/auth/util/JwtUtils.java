@@ -7,7 +7,6 @@ public interface JwtUtils {
 
     String generateAccessToken(User user);
     String generateRefreshToken(User user);
-    String getLogin(String token);
-    String getRole(String token);
+    JwtToken.Claims claimsOf(String token, JwtTokenType tokenType);
 
 }

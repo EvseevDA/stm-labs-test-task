@@ -2,7 +2,7 @@ package com.github.evseevda.stmlabstesttask.businesslogicservice.user.aspect;
 
 
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.entity.User;
-import com.github.evseevda.stmlabstesttask.businesslogicservice.user.exception.LoginAlreadyExistsException;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.user.exception.UserAlreadyExistsException;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.annotation.Aspect;
@@ -23,7 +23,7 @@ public class UserAspect {
     public void requireLoginNotExists(User user) {
         String login = user.getLogin();
         if (userRepository.existsByLogin(login)) {
-            throw new LoginAlreadyExistsException(login);
+            throw new UserAlreadyExistsException(login);
         }
     }
 

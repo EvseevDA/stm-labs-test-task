@@ -1,8 +1,15 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.auth.controller;
 
 
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.dto.request.AuthenticationRequestDto;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.dto.request.RefreshAccessTokenRequestDto;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.dto.request.RegistrationRequestDto;
-import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.service.AuthService;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.dto.response.AuthenticationResponseDto;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.dto.response.RefreshAccessTokenResponseDto;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.mapper.AuthenticationMapper;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.service.AuthenticationService;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.service.output.AuthenticatedUserData;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.auth.service.output.RefreshedAccessTokenData;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.dto.response.DefaultUserResponseDto;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.entity.User;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.mapper.dto.UserDtoMapper;
@@ -23,9 +30,10 @@ import java.util.function.Function;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class AuthRestController {
+public class AuthenticationRestController {
 
-    private final AuthService authService;
+    private final AuthenticationService authenticationService;
+    private final AuthenticationMapper authenticationMapper;
     private final UserDtoMapper userMapper;
 
     @Operation(
@@ -36,7 +44,7 @@ public class AuthRestController {
             @RequestBody @Valid RegistrationRequestDto requestDto
     ) {
         User newUser = userMapper.fromRegistrationRequestDto(requestDto);
-        return register(newUser, authService::registerNewUser);
+        return register(newUser, authenticationService::registerNewUser);
     }
 
     @Operation(
@@ -47,13 +55,29 @@ public class AuthRestController {
             @RequestBody @Valid RegistrationRequestDto requestDto
     ) {
         User newUser = userMapper.fromRegistrationRequestDto(requestDto);
-        return register(newUser, authService::registerAdmin);
+        return register(newUser, authenticationService::registerAdmin);
     }
 
     private ResponseEntity<DefaultUserResponseDto> register(User newUser, Function<User, User> registerMethod) {
         User registered = registerMethod.apply(newUser);
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(userMapper.toDefaultUserResponseDto(registered));
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthenticationResponseDto> authenticate(
+            @RequestBody @Valid AuthenticationRequestDto request
+    ) {
+        AuthenticatedUserData authData = authenticationService.authenticate(request);
+        return ResponseEntity.ok(authenticationMapper.toAuthenticationResponse(authData));
+    }
+
+    @PostMapping("/new-access-token")
+    public ResponseEntity<RefreshAccessTokenResponseDto> refreshAccessToken(
+            @RequestBody @Valid RefreshAccessTokenRequestDto request
+    ) {
+        RefreshedAccessTokenData tokenData = authenticationService.refreshAccessToken(request);
+        return ResponseEntity.ok(authenticationMapper.toRefreshAccessTokenResponse(tokenData));
     }
 
 }
