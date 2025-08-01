@@ -1,12 +1,13 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.core.service;
 
+import com.github.evseevda.stmlabstesttask.businesslogicservice.core.entity.Entity;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.exception.entity.EntityNotFoundException;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.repository.CrudRepository;
 import lombok.RequiredArgsConstructor;
 
 
 @RequiredArgsConstructor
-public abstract class DefaultCrudService<T, ID> implements CrudService<T, ID> {
+public abstract class DefaultCrudService<T extends Entity<ID>, ID> implements CrudService<T, ID> {
 
     private final CrudRepository<T, ID> crudRepository;
 
@@ -17,9 +18,11 @@ public abstract class DefaultCrudService<T, ID> implements CrudService<T, ID> {
 
     @Override
     public T update(T entity) {
-        return crudRepository
-                .update(entity)
-                .orElseThrow(() -> new EntityNotFoundException(entityType()));
+        ID id = entity.getId();
+        if (!existsById(id)) {
+            throw new EntityNotFoundException(entityType(), "id", id);
+        }
+        return crudRepository.update(entity);
     }
 
     @Override
@@ -34,5 +37,11 @@ public abstract class DefaultCrudService<T, ID> implements CrudService<T, ID> {
                 .orElseThrow(() -> new EntityNotFoundException(entityType(), "id", String.valueOf(id)));
     }
 
+    @Override
+    public boolean existsById(ID id) {
+        return crudRepository.existsById(id);
+    }
+
     protected abstract Class<T> entityType();
+
 }

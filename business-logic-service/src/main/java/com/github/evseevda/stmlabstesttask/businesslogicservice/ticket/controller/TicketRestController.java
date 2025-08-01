@@ -2,6 +2,7 @@ package com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.controll
 
 
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.controller.AbstractCrudRestController;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.core.data.request.PageRequest;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.util.mapper.RequestDtoMapper;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.dto.request.TicketRequestDto;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.dto.response.TicketResponseDto;
@@ -10,11 +11,12 @@ import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.search.Ti
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.service.TicketService;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,29 +42,13 @@ public class TicketRestController
         this.userService = userService;
     }
 
-    /**
-     * В любом запросе с {@link TicketRequestDto} пытается найти параметр запроса
-     * {@code timeOffset} и применить его к {@link TicketRequestDto#dateTime}
-     * @param timeOffset смещение времени в часах
-     * @param requestDto объект передачи данных из пользовательского запроса
-     */
-    @ModelAttribute
-    public void applyTimeOffset(
-            @RequestParam(defaultValue = "0") Integer timeOffset,
-            @RequestBody TicketRequestDto requestDto
-    ) {
-        if (timeOffset != 0) {
-            requestDto.setDateTime(requestDto.getDateTime().plusHours(timeOffset));
-        }
-    }
-
     @Operation(
             summary = "Получение всех доступных для покупки билетов"
     )
     @GetMapping("/all-available")
     public ResponseEntity<List<TicketResponseDto>> getAllAvailableTickets(
-            @ModelAttribute PageRequest pageRequest,
-            @ModelAttribute TicketSearchFilter filter
+            @Valid @ModelAttribute PageRequest pageRequest,
+            @Valid @ModelAttribute TicketSearchFilter filter
     ) {
         List<TicketResponseDto> tickets = service.findAllAvailableTickets(pageRequest, filter)
                 .map(mapper::toResponseDto)
@@ -71,7 +57,17 @@ public class TicketRestController
     }
 
     @Operation(
-            summary = "Покупка билета"
+            summary = "Покупка билета",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Если билет успешно куплен"
+                    ),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "Если билет уже куплен"
+                    )
+            }
     )
     @PatchMapping("/purchase/{ticketId}")
     public ResponseEntity<TicketResponseDto> buyTicket(

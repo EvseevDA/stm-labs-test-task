@@ -42,7 +42,7 @@ public class RouteRepositoryImpl implements RouteRepository {
     }
 
     @Override
-    public Optional<Route> update(Route entity) {
+    public Route update(Route entity) {
         String sql = """
                 UPDATE bl.route
                 SET
@@ -51,6 +51,7 @@ public class RouteRepositoryImpl implements RouteRepository {
                     carrier_id = :carrierId,
                     duration_in_minutes = :durationInMinutes
                 WHERE id = :id
+                RETURNING *
                 """;
         Map<String, ?> params = Map.of(
                 "id", entity.getId(),
@@ -59,7 +60,7 @@ public class RouteRepositoryImpl implements RouteRepository {
                 "carrierId", entity.getCarrier().getId(),
                 "durationInMinutes", entity.getDurationInMinutes()
         );
-        return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractNullableEntity);
+        return jdbcTemplate.query(sql, params, routeJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
@@ -69,4 +70,10 @@ public class RouteRepositoryImpl implements RouteRepository {
         jdbcTemplate.update(sql, params);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM bl.route WHERE id = :id)";
+        Map<String, ?> params = Map.of("id", id);
+        return jdbcTemplate.queryForObject(sql, params, Boolean.class);
+    }
 }

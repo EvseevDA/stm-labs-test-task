@@ -10,7 +10,7 @@ services:
   kafka:
     image: confluentinc/cp-kafka:7.0.1
     healthcheck:
-      test: ["CMD", "nc", "-z", "kafka", "9092"]
+      test: [ "CMD", "nc", "-z", "kafka", "9092" ]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -39,129 +39,148 @@ services:
       - '6379:6379'
     networks:
       - backend
-      
-#  eureka-server:
-#    image: evseevdmitry/transport-ticket-eureka-server:0.9.0
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://eureka-server:8761/actuator/health" ]
-#      interval: 10s
-#      timeout: 5s
-#      retries: 5
-#    ports:
-#      - '8761:8761'
-#    networks:
-#      - backend
-#    depends_on:
-#      kafka:
-#        condition: service_healthy
-#      redis:
-#        condition: service_healthy
-#    environment:
-#      - SERVER_PORT=8761
-#      - eureka.instance.preferIpAddress=true
-#
-#  business-logic-db:
-#    image: postgres:16.2
-#    healthcheck:
-#      test: ["CMD", "pg_isready"]
-#      interval: 30s
-#      timeout: 5s
-#      retries: 5
-#    ports:
-#      - '5432:5432'
-#    networks:
-#      - backend
-#    restart: unless-stopped
-#    volumes:
-#      - ./auth-service/infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
-#    environment:
-#      POSTGRES_USER: ${BL_DATASOURCE_USERNAME}
-#      POSTGRES_PASSWORD: ${BL_DATASOURCE_PASSWORD}
-#      PGPORT: ${BL_DATASOURCE_PORT}
-#
-#  bl-service:
-#    image: evseevdmitry/transport-ticket-bl-service:0.9.0
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://bl-service:8081/actuator/health" ]
-#      interval: 30s
-#      timeout: 5s
-#      retries: 5
-#    ports:
-#      - '8081:8081'
-#    networks:
-#      - backend
-#    depends_on:
-#      business-logic-db:
-#        condition: service_healthy
-#      mail:
-#        condition:
-#    environment:
-#      #         SPRING
-#      - SERVER_PORT=8081
-#      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
-#      #         DATASOURCE
-#      - DATASOURCE_URL=${BL_DATASOURCE_URL}
-#      - DATASOURCE_USERNAME=${BL_DATASOURCE_USERNAME}
-#      - DATASOURCE_PASSWORD=${BL_DATASOURCE_PASSWORD}
-#      #         JWT
-#      - JWT_ACCESS_SECRET=${JWT_SECRET}
-#      - JWT_ACCESS_LIFETIME=${JWT_ACCESS_LIFETIME}
-#      - JWT_REFRESH_SECRET=${JWT_SECRET}
-#      - JWT_REFRESH_LIFETIME=${JWT_REFRESH_LIFETIME}
-#      #         KAFKA
-#      - spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVER}
-#      #         REDIS
-#      - SPRING_DATA_REDIS_DATABASE=${BL_REDIS_DATABASE}
-#      - SPRING_DATA_REDIS_HOST=${REDIS_HOST}
-#      - SPRING_DATA_REDIS_PORT=${REDIS_PORT}
-#      - SPRING_DATA_REDIS_PASSWORD=${REDIS_PASSWORD}
-#
-#  purchased-ticket-db:
-#    image: postgres:16.2
-#    healthcheck:
-#      test: [ "CMD", "pg_isready" ]
-#      interval: 30s
-#      timeout: 5s
-#      retries: 5
-#    ports:
-#      - '5483:5433'
-#    networks:
-#      - backend
-#    restart: unless-stopped
-#    volumes:
-#      - ./purchased-ticket-service/infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
-#    environment:
-#      POSTGRES_USER: ${PURCHASED_TICKET_DATASOURCE_USERNAME}
-#      POSTGRES_PASSWORD: ${PURCHASED_TICKET_DATASOURCE_PASSWORD}
-#      PGPORT: ${PURCHASED_TICKET_DATASOURCE_PORT}
-#
-#  purchased-ticket-service:
-#    image: evseevdmitry/transport-ticket-purchased-ticket-service:0.9.0
-#    healthcheck:
-#      test: [ "CMD", "curl", "-f", "http://purchased-ticket-service:8082/actuator/health" ]
-#      interval: 30s
-#      timeout: 5s
-#      retries: 5
-#    ports:
-#      - '8082:8082'
-#    networks:
-#      - backend
-#    depends_on:
-#      purchased-ticket-db:
-#        condition: service_healthy
-#      bl-service:
-#        condition: service_healthy
-#    environment:
-#      #         SPRING
-#      - SERVER_PORT=8082
-#      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
-#      #         DATASOURCE
-#      - DATASOURCE_URL=${BL_DATASOURCE_URL}
-#      - DATASOURCE_USERNAME=${BL_DATASOURCE_USERNAME}
-#      - DATASOURCE_PASSWORD=${BL_DATASOURCE_PASSWORD}
-#      #         KAFKA
-#      - spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVER}
-  
+
+  eureka-server:
+    image: evseevdmitry/transport-ticket-eureka-server:0.9.0
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://eureka-server:8761/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '8761:8761'
+    networks:
+      - backend
+    depends_on:
+      kafka:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=8761
+      - eureka.instance.preferIpAddress=true
+
+  api-gateway:
+    image: evseevdmitry/transport-ticket-api-gateway:0.9.0
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://api-gateway:8080/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '8080:8080'
+    networks:
+      - backend
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    environment:
+      - SERVER_PORT=8080
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
+      - ALLOWED_ORIGINS=${API_GATEWAY_ALLOWED_ORIGINS}
+      - ALLOWED_METHODS=${API_GATEWAY_ALLOWED_METHODS}
+      - ALLOWED_HEADERS=${API_GATEWAY_ALLOWED_HEADERS}
+
+  bl-db:
+    image: postgres:16.2
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5432:5432'
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./business-logic-service/infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    environment:
+      POSTGRES_USER: ${BL_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${BL_DATASOURCE_PASSWORD}
+      PGPORT: ${BL_DATASOURCE_PORT}
+
+  bl-service:
+    image: evseevdmitry/transport-ticket-bl-service:0.9.0
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://bl-service:8081/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '8081:8081'
+    networks:
+      - backend
+    depends_on:
+      bl-db:
+        condition: service_healthy
+      api-gateway:
+        condition: service_healthy
+    environment:
+      #         SPRING
+      - SERVER_PORT=8081
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
+      #         DATASOURCE
+      - DATASOURCE_URL=${BL_DATASOURCE_URL}
+      - DATASOURCE_USERNAME=${BL_DATASOURCE_USERNAME}
+      - DATASOURCE_PASSWORD=${BL_DATASOURCE_PASSWORD}
+      #         JWT
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_ACCESS_LIFETIME=${JWT_ACCESS_LIFETIME}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_REFRESH_LIFETIME=${JWT_REFRESH_LIFETIME}
+      #         KAFKA
+      - spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVERS}
+      #         REDIS
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+
+  purchased-ticket-db:
+    image: postgres:16.2
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '5483:5433'
+    networks:
+      - backend
+    restart: unless-stopped
+    volumes:
+      - ./purchased-ticket-service/infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/init_db.sql
+    environment:
+      POSTGRES_USER: ${PURCHASED_TICKET_DATASOURCE_USERNAME}
+      POSTGRES_PASSWORD: ${PURCHASED_TICKET_DATASOURCE_PASSWORD}
+      PGPORT: ${PURCHASED_TICKET_DATASOURCE_PORT}
+
+  purchased-ticket-service:
+    image: evseevdmitry/transport-ticket-purchased-ticket-service:0.9.0
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://purchased-ticket-service:8082/actuator/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+    ports:
+      - '8082:8082'
+    networks:
+      - backend
+    depends_on:
+      purchased-ticket-db:
+        condition: service_healthy
+      bl-service:
+        condition: service_healthy
+    environment:
+      #         SPRING
+      - SERVER_PORT=8082
+      - eureka.client.serviceUrl.defaultZone=http://eureka-server:8761/eureka
+      #         DATASOURCE
+      - DATASOURCE_URL=${PURCHASED_TICKET_DATASOURCE_URL}
+      - DATASOURCE_USERNAME=${PURCHASED_TICKET_DATASOURCE_USERNAME}
+      - DATASOURCE_PASSWORD=${PURCHASED_TICKET_DATASOURCE_PASSWORD}
+      #         KAFKA
+      - spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVERS}
+
 networks:
   backend:
     driver: bridge

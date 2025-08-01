@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface RoleRepository {
 
-    Optional<Role> findRoleById(Long roleId);
+    Optional<Role> findRoleById(Integer roleId);
     Optional<Role> findRoleByName(String roleName);
 
 }

@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class RoleJdbcRecordMapper extends AbstractJdbcRecordMapper<Role> {
 
     @Override
-    public Role extractEntity(ResultSet rs) throws SQLException {
+    public Role justExtractEntity(ResultSet rs) throws SQLException {
         Integer id = rs.getInt("id");
         String name = rs.getString("name");
         return new Role(id, name);

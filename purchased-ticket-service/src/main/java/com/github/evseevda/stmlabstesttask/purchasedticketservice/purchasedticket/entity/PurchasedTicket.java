@@ -11,9 +11,12 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class PurchasedTicket {
 
+    @EqualsAndHashCode.Include
     private Long ticketId;
+    @EqualsAndHashCode.Include
     private Long passengerId;
     private BigDecimal cost;
     private LocalDateTime purchaseTimestampUtc;

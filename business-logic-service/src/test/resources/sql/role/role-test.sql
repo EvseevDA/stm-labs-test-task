@@ -1,0 +1,1 @@
+INSERT INTO security.role (id, name) VALUES (27, 'TEST_ROLE');

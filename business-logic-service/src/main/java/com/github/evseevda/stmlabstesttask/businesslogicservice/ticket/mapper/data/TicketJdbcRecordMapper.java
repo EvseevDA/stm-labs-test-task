@@ -23,7 +23,7 @@ public class TicketJdbcRecordMapper extends AbstractJdbcRecordMapper<Ticket> {
     private final UserRepository userRepository;
 
     @Override
-    public Ticket extractEntity(ResultSet rs) throws SQLException {
+    public Ticket justExtractEntity(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
         long routeId = rs.getLong("route_id");
         LocalDateTime dateTimeUtc = rs.getObject("date_time_utc", LocalDateTime.class);
@@ -32,7 +32,7 @@ public class TicketJdbcRecordMapper extends AbstractJdbcRecordMapper<Ticket> {
         Long passengerId = rs.getObject("passenger_id", Long.class);
 
         Route route = routeRepository.findById(routeId).get();
-        User passenger = userRepository.findById(passengerId).orElse(null);
+        User passenger = passengerId != null ? userRepository.findById(passengerId).get() : null;
 
         return Ticket.builder()
                 .id(id)

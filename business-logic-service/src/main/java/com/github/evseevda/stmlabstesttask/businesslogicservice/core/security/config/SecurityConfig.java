@@ -42,12 +42,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request ->
                         request.requestMatchers(
                                         "/api/auth/registration/user",
+                                        "/api/auth",
+                                        "/api/auth/new-access-token",
                                         "/api/ticket/all-available",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
-                                        "/actuator/health",
-                                        "/api/auth",
-                                        "/api/auth/new-access-token"
+                                        "/actuator/health"
                                 ).permitAll()
                                 .requestMatchers(
                                         "/api/auth/registration/admin"

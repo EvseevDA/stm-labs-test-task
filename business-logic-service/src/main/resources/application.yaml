@@ -2,19 +2,19 @@ spring:
   application:
     name: business-logic-service
   datasource:
-    url: jdbc:postgresql://localhost:5433/transport_ticket_bl_service_db
-    username: postgres
-    password: postgres
+    url: ${DATASOURCE_URL}
+    username: ${DATASOURCE_USERNAME}
+    password: ${DATASOURCE_PASSWORD}
   flyway:
     enabled: true
     baseline-on-migrate: true
     schemas: bl,security
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
     topic:
       purchased-ticket:
         name: purchased-ticket
@@ -38,8 +38,8 @@ security:
 
 jwt:
   access:
-    secret: 00fa233fa14a982747ae324cac254751d11bb96ae0c7d377442fd34b026a9b22
-    lifetime: 15m
+    secret: ${JWT_ACCESS_SECRET}
+    lifetime: ${JWT_ACCESS_LIFETIME}
   refresh:
-    secret: 6b67ebe56aa984be2d8f218f3bbea2faa65e8530fba95284ab796c2884e25567
-    lifetime: 15d
+    secret: ${JWT_REFRESH_SECRET}
+    lifetime: ${JWT_REFRESH_LIFETIME}

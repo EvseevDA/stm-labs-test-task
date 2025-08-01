@@ -25,13 +25,13 @@ public class SwaggerConfig {
                 .components(
                         new Components()
                                 .addSecuritySchemes(
-                                        "BearerAuthentication", securityScheme()
+                                        "Bearer Authentication", securityScheme()
                                 )
                 )
                 .servers(
                         List.of(
                                 new Server()
-                                        .url("http://localhost:8082")
+                                        .url("http://localhost:8081")
                                         .description("Central service of application")
                         )
                 )

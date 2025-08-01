@@ -13,7 +13,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
     @Override
-    public Role findRoleById(Long roleId) {
+    public Role findRoleById(Integer roleId) {
         return roleRepository.findRoleById(roleId)
                 .orElseThrow(() -> new EntityNotFoundException(Role.class, "id", String.valueOf(roleId)));
     }
