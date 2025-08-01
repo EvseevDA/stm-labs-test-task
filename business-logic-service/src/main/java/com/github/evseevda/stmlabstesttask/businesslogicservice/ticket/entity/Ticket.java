@@ -1,5 +1,6 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.entity;
 
+import com.github.evseevda.stmlabstesttask.businesslogicservice.core.entity.Entity;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.route.entity.Route;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.entity.User;
 import lombok.*;
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode
 @Builder
-public class Ticket {
+public class Ticket implements Entity<Long> {
 
     private Long id;
     private Route route;

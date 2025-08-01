@@ -17,7 +17,7 @@ public class RouteJdbcRecordMapper extends AbstractJdbcRecordMapper<Route> {
     private final CarrierRepository carrierRepository;
 
     @Override
-    public Route extractEntity(ResultSet rs) throws SQLException {
+    public Route justExtractEntity(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
         String startPoint = rs.getString("start_point");
         String destinationPoint = rs.getString("destination_point");

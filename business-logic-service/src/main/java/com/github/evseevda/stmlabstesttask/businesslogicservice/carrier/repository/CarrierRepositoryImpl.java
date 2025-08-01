@@ -36,11 +36,11 @@ public class CarrierRepositoryImpl implements CarrierRepository {
                 "companyName", entity.getCompanyName(),
                 "phone", entity.getPhone()
         );
-        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
-    public Optional<Carrier> update(Carrier entity) {
+    public Carrier update(Carrier entity) {
         String sql = """
                 UPDATE bl.carrier
                 SET company_name = :companyName, phone = :phone
@@ -52,7 +52,7 @@ public class CarrierRepositoryImpl implements CarrierRepository {
                 "companyName", entity.getCompanyName(),
                 "phone", entity.getPhone()
         );
-        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractNullableEntity);
+        return jdbcTemplate.query(sql, params, carrierJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
@@ -62,4 +62,10 @@ public class CarrierRepositoryImpl implements CarrierRepository {
         jdbcTemplate.update(sql, params);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM bl.carrier WHERE id = :id)";
+        Map<String, ?> params = Map.of("id", id);
+        return jdbcTemplate.queryForObject(sql, params, Boolean.class);
+    }
 }

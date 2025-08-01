@@ -1,0 +1,38 @@
+spring:
+  application:
+    name: business-logic-service
+  datasource:
+    url: jdbc:tc:postgresql:16:///transport_ticket_bl_service_db?TC_DAEMON=true
+    username: postgres
+    password: postgres
+  data:
+    redis:
+      host: _
+      port: 3333
+  kafka:
+    bootstrap-servers: _
+    topic:
+      purchased-ticket:
+        name: _
+        partitions: 1
+        replication-factor: 1
+
+cache:
+  tickets:
+    list:
+      lifetime: 1h
+
+security:
+  user:
+    roles:
+      default: ROLE_PURCHASER
+      purchaser: ROLE_PURCHASER
+      admin: ROLE_ADMIN
+
+jwt:
+  access:
+    secret: 68745a04a6f9cd885d89e21de2a9f7e7e508a53b3204ca8611584aa9d1e44362 # fake
+    lifetime: 10s
+  refresh:
+    secret: e0cc2f5cf158726a9dbf5dd339299470668e413f5671bb7666b5c27ad26c2bbe # fake
+    lifetime: 10s

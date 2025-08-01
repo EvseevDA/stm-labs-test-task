@@ -43,8 +43,7 @@ public class AuthenticationRestController {
     public ResponseEntity<DefaultUserResponseDto> registerUser(
             @RequestBody @Valid RegistrationRequestDto requestDto
     ) {
-        User newUser = userMapper.fromRegistrationRequestDto(requestDto);
-        return register(newUser, authenticationService::registerNewUser);
+        return register(requestDto, authenticationService::registerNewUser);
     }
 
     @Operation(
@@ -54,16 +53,21 @@ public class AuthenticationRestController {
     public ResponseEntity<DefaultUserResponseDto> registerAdmin(
             @RequestBody @Valid RegistrationRequestDto requestDto
     ) {
-        User newUser = userMapper.fromRegistrationRequestDto(requestDto);
-        return register(newUser, authenticationService::registerAdmin);
+        return register(requestDto, authenticationService::registerAdmin);
     }
 
-    private ResponseEntity<DefaultUserResponseDto> register(User newUser, Function<User, User> registerMethod) {
-        User registered = registerMethod.apply(newUser);
+    private ResponseEntity<DefaultUserResponseDto> register(
+            RegistrationRequestDto requestDto,
+            Function<User, User> registerMethod
+    ) {
+        User registered = registerMethod.apply(userMapper.fromRegistrationRequestDto(requestDto));
         return ResponseEntity.status(HttpStatus.CREATED.value())
                 .body(userMapper.toDefaultUserResponseDto(registered));
     }
 
+    @Operation(
+            summary = "Аутентификация"
+    )
     @PostMapping
     public ResponseEntity<AuthenticationResponseDto> authenticate(
             @RequestBody @Valid AuthenticationRequestDto request
@@ -72,6 +76,9 @@ public class AuthenticationRestController {
         return ResponseEntity.ok(authenticationMapper.toAuthenticationResponse(authData));
     }
 
+    @Operation(
+            summary = "Обновление access токена"
+    )
     @PostMapping("/new-access-token")
     public ResponseEntity<RefreshAccessTokenResponseDto> refreshAccessToken(
             @RequestBody @Valid RefreshAccessTokenRequestDto request

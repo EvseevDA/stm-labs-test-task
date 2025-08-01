@@ -1,0 +1,1 @@
+CREATE DATABASE transport_ticket_purchased_ticket_service_db;

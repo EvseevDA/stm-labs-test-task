@@ -4,7 +4,7 @@ package com.github.evseevda.stmlabstesttask.businesslogicservice.auth.util;
 public enum JwtTokenClaim {
 
     LOGIN("login"),
-    ROLE("login");
+    ROLE("role");
 
     private final String name;
 

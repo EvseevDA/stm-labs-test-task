@@ -9,7 +9,7 @@ public class CacheKey {
     private static final String TICKETS_POSTFIX = "#tickets";
 
     public static String tickets(User user) {
-        return user + TICKETS_POSTFIX;
+        return user.getLogin() + TICKETS_POSTFIX;
     }
 
 }

@@ -5,7 +5,7 @@ import com.github.evseevda.stmlabstesttask.businesslogicservice.core.util.mapper
 import org.jooq.Record;
 import org.springframework.stereotype.Component;
 
-import static com.github.evseevda.businesslogicservice.bl.tables.Carrier.CARRIER;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Carrier.CARRIER;
 
 
 @Component

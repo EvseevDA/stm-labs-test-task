@@ -1,6 +1,6 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.service;
 
-import com.github.evseevda.stmlabstesttask.businesslogicservice.core.exception.entity.EntityNotFoundException;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.core.data.request.PageRequest;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.repository.CrudRepository;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.service.DefaultCrudService;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.entity.Ticket;
@@ -8,7 +8,6 @@ import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.repositor
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.search.TicketSearchFilter;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.stream.Stream;
@@ -38,8 +37,7 @@ public class TicketServiceImpl extends DefaultCrudService<Ticket, Long> implemen
 
     @Override
     public Ticket buyTicket(Long ticketId, Long passengerId) {
-        return ticketRepository.markAsBought(ticketId, passengerId)
-                .orElseThrow(() -> new EntityNotFoundException(entityType(), "id", String.valueOf(ticketId)));
+        return ticketRepository.markAsBought(ticketId, passengerId);
     }
 
     @Override

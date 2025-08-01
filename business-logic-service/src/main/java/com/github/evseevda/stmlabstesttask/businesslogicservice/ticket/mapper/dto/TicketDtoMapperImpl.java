@@ -2,19 +2,20 @@ package com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.mapper.d
 
 import com.github.evseevda.stmlabstesttask.businesslogicservice.route.entity.Route;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.route.mapper.dto.RouteDtoMapper;
+import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.dto.kafka.PurchasedTicketKafkaDto;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.dto.request.TicketRequestDto;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.dto.response.TicketResponseDto;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.entity.Ticket;
-import com.github.evseevda.stmlabstesttask.businesslogicservice.user.mapper.dto.UserDtoMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
 public class TicketDtoMapperImpl implements TicketDtoMapper {
 
     private final RouteDtoMapper routeDtoMapper;
-    private final UserDtoMapper userDtoMapper;
 
     @Override
     public Ticket fromRequestDto(TicketRequestDto requestDto) {
@@ -51,6 +52,16 @@ public class TicketDtoMapperImpl implements TicketDtoMapper {
                 .dateTime(ticket.getDateTimeUtc())
                 .seatNumber(ticket.getSeatNumber())
                 .cost(ticket.getCost())
+                .build();
+    }
+
+    @Override
+    public PurchasedTicketKafkaDto toPurchasedTicketKafkaDto(Ticket ticket, LocalDateTime purchaseTimestamp) {
+        return PurchasedTicketKafkaDto.builder()
+                .ticketId(ticket.getId())
+                .passengerId(ticket.getPassenger().getId())
+                .cost(ticket.getCost())
+                .purchaseTimestamp(purchaseTimestamp)
                 .build();
     }
 }

@@ -10,5 +10,6 @@ public interface UserService extends UserDetailsService {
     User saveNew(User user) throws UserAlreadyExistsException;
     User findById(Long userId);
     User currentUser();
+    boolean existsById(Long id);
 
 }

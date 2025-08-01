@@ -1,5 +1,6 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.repository;
 
+import com.github.evseevda.stmlabstesttask.businesslogicservice.core.data.request.PageRequest;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.util.mapper.JdbcRecordMapper;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.util.mapper.JooqRecordMapper;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.ticket.entity.Ticket;
@@ -8,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.jooq.Record;
 import org.jooq.SelectConditionStep;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -17,9 +17,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.github.evseevda.businesslogicservice.bl.tables.Carrier.CARRIER;
-import static com.github.evseevda.businesslogicservice.bl.tables.Route.ROUTE;
-import static com.github.evseevda.businesslogicservice.bl.tables.Ticket.TICKET;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Carrier.CARRIER;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Route.ROUTE;
+import static com.github.evseevda.stmlabstesttask.businesslogicservice.bl.tables.Ticket.TICKET;
 
 @Repository
 @RequiredArgsConstructor
@@ -32,7 +32,8 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public Stream<Ticket> findAllAvailableTickets(PageRequest pageRequest, TicketSearchFilter filter) {
-        SelectConditionStep<? extends Record> baseQuery = dsl.select(
+        SelectConditionStep<? extends Record> baseQuery = dsl
+                .select(
                         TICKET.ID,
                         TICKET.DATE_TIME_UTC,
                         TICKET.SEAT_NUMBER,
@@ -52,7 +53,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                 .where(TICKET.PASSENGER_ID.isNull());
 
         return addSearchFilter(baseQuery, filter)
-                .limit(pageRequest.getPageSize())
+                .limit(pageRequest.getCount())
                 .offset(pageRequest.getOffset())
                 .fetch(ticketJooqRecordMapper::extractEntity)
                 .stream();
@@ -91,10 +92,10 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
     @Override
-    public Optional<Ticket> markAsBought(Long ticketId, Long passengerId) {
+    public Ticket markAsBought(Long ticketId, Long passengerId) {
         String sql = """
             UPDATE bl.ticket
-            SET passenger_id = :passengerId 
+            SET passenger_id = :passengerId
             WHERE id = :ticketId
             RETURNING *
         """;
@@ -102,7 +103,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                 "ticketId", ticketId,
                 "passengerId", passengerId
         );
-        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNullableEntity);
+        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
@@ -118,7 +119,7 @@ public class TicketRepositoryImpl implements TicketRepository {
     public Stream<Ticket> findAllTicketsByPassengerId(Long passengerId) {
         String sql = "SELECT * FROM bl.ticket WHERE passenger_id = :passengerId";
         Map<String, ?> params = Map.of("passengerId", passengerId);
-        return jdbcTemplate.queryForStream(sql, params, (rs, rowNum) -> ticketJdbcRecordMapper.extractEntity(rs));
+        return jdbcTemplate.queryForStream(sql, params, (rs, rowNum) -> ticketJdbcRecordMapper.justExtractEntity(rs));
     }
 
     @Override
@@ -135,19 +136,20 @@ public class TicketRepositoryImpl implements TicketRepository {
                 "seatNumber", entity.getSeatNumber(),
                 "cost", entity.getCost()
         );
-        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractEntity);
+        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
-    public Optional<Ticket> update(Ticket entity) {
+    public Ticket update(Ticket entity) {
         String sql = """
                 UPDATE bl.ticket
                 SET
                     route_id = :routeId,
-                    date_time_utc = :date_time_utc,
-                    seat_number = :seat_number,
+                    date_time_utc = :dateTimeUtc,
+                    seat_number = :seatNumber,
                     cost = :cost
                 WHERE id = :id
+                RETURNING *
                 """;
         Map<String, ?> params = Map.of(
                 "id", entity.getId(),
@@ -156,7 +158,7 @@ public class TicketRepositoryImpl implements TicketRepository {
                 "seatNumber", entity.getSeatNumber(),
                 "cost", entity.getCost()
         );
-        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNullableEntity);
+        return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNonNullableEntity);
     }
 
     @Override
@@ -173,4 +175,10 @@ public class TicketRepositoryImpl implements TicketRepository {
         return jdbcTemplate.query(sql, params, ticketJdbcRecordMapper::extractNullableEntity);
     }
 
+    @Override
+    public boolean existsById(Long id) {
+        String sql = "SELECT EXISTS(SELECT 1 FROM bl.ticket WHERE id = :id)";
+        Map<String, ?> params = Map.of("id", id);
+        return jdbcTemplate.queryForObject(sql, params, Boolean.class);
+    }
 }

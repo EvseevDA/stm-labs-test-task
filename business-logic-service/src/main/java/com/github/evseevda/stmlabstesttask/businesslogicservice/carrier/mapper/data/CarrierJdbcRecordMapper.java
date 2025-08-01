@@ -14,7 +14,7 @@ import java.sql.SQLException;
 public class CarrierJdbcRecordMapper extends AbstractJdbcRecordMapper<Carrier> {
 
     @Override
-    public Carrier extractEntity(ResultSet rs) throws SQLException {
+    public Carrier justExtractEntity(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
         String companyName = rs.getString("company_name");
         String phone = rs.getString("phone");

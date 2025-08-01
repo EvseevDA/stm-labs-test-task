@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
         String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
         return loadUserByUsername(currentUserLogin);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return userRepository.existsById(id);
+    }
 }

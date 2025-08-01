@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webmvc:
+          routes:
+              # Business logic
+            - id: blService
+              uri: lb://BUSINESS-LOGIC-SERVICE
+              predicates:
+                - Path=/api/**
+              metadata:
+                cors:
+                  allowedOrigins: ${ALLOWED_ORIGINS}
+                  allowedMethods: ${ALLOWED_METHODS}
+                  allowedHeaders: ${ALLOWED_HEADERS}
+
+server:
+  port: 8080

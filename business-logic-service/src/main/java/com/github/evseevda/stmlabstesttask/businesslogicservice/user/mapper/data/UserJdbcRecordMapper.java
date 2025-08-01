@@ -17,12 +17,12 @@ public class UserJdbcRecordMapper extends AbstractJdbcRecordMapper<User> {
     private final RoleRepository roleRepository;
 
     @Override
-    public User extractEntity(ResultSet rs) throws SQLException {
+    public User justExtractEntity(ResultSet rs) throws SQLException {
         long id = rs.getLong("id");
         String login = rs.getString("login");
         String password = rs.getString("password");
         String fullName = rs.getString("full_name");
-        long roleId = rs.getLong("role_id");
+        int roleId = rs.getInt("role_id");
 
         Role role = roleRepository.findRoleById(roleId).get();
 

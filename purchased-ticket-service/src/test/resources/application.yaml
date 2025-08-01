@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: purchased-ticket-service
+  datasource:
+    url: jdbc:tc:postgresql:16:///transport_ticket_purchased_ticket_service_db?TC_DAEMON=true
+    username: postgres
+    password: postgres
+  kafka:
+    bootstrap-servers: _
+    consumer:
+      purchased-ticket-group-id: _
+    backoff:
+      attempts: 5
+    topic:
+      purchased-ticket: _

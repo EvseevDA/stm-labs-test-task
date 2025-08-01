@@ -37,6 +37,8 @@ public class PurchasedTicketRepositoryImpl implements PurchasedTicketRepository 
     }
 
     private PurchasedTicket extractPurchasedTicket(ResultSet rs) throws SQLException {
+        rs.next();
+
         long ticketId = rs.getLong("ticket_id");
         long passengerId = rs.getLong("passenger_id");
         BigDecimal cost = rs.getObject("cost", BigDecimal.class);

@@ -26,17 +26,17 @@ CREATE TABLE bl.route(
     start_point VARCHAR(512) NOT NULL,
     destination_point VARCHAR(512) NOT NULL,
     carrier_id BIGINT NOT NULL,
-    FOREIGN KEY (carrier_id) REFERENCES carrier(id),
+    FOREIGN KEY (carrier_id) REFERENCES bl.carrier(id),
     duration_in_minutes BIGINT NOT NULL
 );
 
 CREATE TABLE bl.ticket(
     id BIGSERIAL PRIMARY KEY,
     route_id BIGINT NOT NULL,
-    FOREIGN KEY (route_id) REFERENCES route(id),
+    FOREIGN KEY (route_id) REFERENCES bl.route(id),
     date_time_utc TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     seat_number INT NOT NULL,
     cost DECIMAL NOT NULL,
     passenger_id BIGINT,
-    FOREIGN KEY (passenger_id) REFERENCES app_user(id)
+    FOREIGN KEY (passenger_id) REFERENCES bl.app_user(id)
 );

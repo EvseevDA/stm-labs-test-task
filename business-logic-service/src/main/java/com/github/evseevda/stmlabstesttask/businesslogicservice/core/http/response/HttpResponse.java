@@ -3,6 +3,7 @@ package com.github.evseevda.stmlabstesttask.businesslogicservice.core.http.respo
 
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.dto.ErrorResponseBody;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
@@ -15,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 public class HttpResponse {
 
     private HttpServletResponse originalResponse;
+    @Getter
     private ErrorResponseBody body;
 
     public HttpResponse(HttpServletResponse originalResponse) {
@@ -39,10 +41,6 @@ public class HttpResponse {
     public HttpResponse withMessage(String message) {
         this.body = ErrorResponseBody.withMessage(message);
         return this;
-    }
-
-    public ErrorResponseBody getBody() {
-        return body;
     }
 
     public PrintWriter writer() throws IOException {

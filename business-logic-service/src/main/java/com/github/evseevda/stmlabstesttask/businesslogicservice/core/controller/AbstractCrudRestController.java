@@ -1,6 +1,7 @@
 package com.github.evseevda.stmlabstesttask.businesslogicservice.core.controller;
 
 
+import com.github.evseevda.stmlabstesttask.businesslogicservice.core.entity.Entity;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.service.CrudService;
 import com.github.evseevda.stmlabstesttask.businesslogicservice.core.util.mapper.RequestDtoMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
-public class AbstractCrudRestController<E, ID, IN, OUT> {
+public class AbstractCrudRestController<E extends Entity<ID>, ID, IN, OUT> {
 
     protected final CrudService<E, ID> service;
     protected final RequestDtoMapper<E, ID, IN, OUT> mapper;
@@ -50,11 +51,16 @@ public class AbstractCrudRestController<E, ID, IN, OUT> {
                             description = "Если сущность успешно обновлена"
                     ),
                     @ApiResponse(
+                            responseCode = "400",
+                            description = "Если сущность не найдена"
+                    ),
+                    @ApiResponse(
                             responseCode = "403",
                             description = "Если у пользователя нет прав на обновление сущности"
                     )
             }
     )
+
     @PutMapping("/{id}")
     public ResponseEntity<OUT> update(
             @NotNull @PathVariable ID id,
@@ -79,7 +85,7 @@ public class AbstractCrudRestController<E, ID, IN, OUT> {
             }
     )
     @DeleteMapping("/{id}")
-    protected ResponseEntity<Void> delete(@NotNull @PathVariable ID id) {
+    public ResponseEntity<Void> delete(@NotNull @PathVariable ID id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
